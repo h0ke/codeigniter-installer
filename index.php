@@ -2,8 +2,7 @@
 
 error_reporting(E_NONE); //Setting this to E_ALL showed that that cause of not redirecting were few blank lines added in some php files.
 
-$db_config_path = '../application/config/database.php';
-$base_config_path = '../application/config/config.php';
+$config_path = '../application/config/';
 
 // Only load the classes in case the user submitted the form
 if($_POST) {
@@ -87,24 +86,24 @@ if($_POST) {
     <body>
 
     <center><h1>Install</h1></center>
-    <?php if(is_writable($db_config_path)){?>
+    <?php if(is_writable($config_path)){?>
 
-          <?php if(isset($message)) {echo '<p class="error">' . $message . '</p>';}?>
+        <?php if(isset($message)) {echo '<p class="error">' . $message . '</p>';}?>
 
-          <form id="install_form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-        <fieldset>
-          <legend>Database settings</legend>
-          <label for="hostname">Hostname</label><input type="text" id="hostname" value="localhost" class="input_text" name="hostname" />
-          <label for="username">Username</label><input type="text" id="username" class="input_text" name="username" />
-          <label for="password">Password</label><input type="password" id="password" class="input_text" name="password" />
-          <label for="database">Database Name</label><input type="text" id="database" class="input_text" name="database" />
-          <input type="submit" value="Install" id="submit" />
-        </fieldset>
-          </form>
+        <form id="install_form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+            <fieldset>
+                <legend>Database settings</legend>
+                <label for="hostname">Hostname</label><input type="text" id="hostname" value="localhost" class="input_text" name="hostname" />
+                <label for="username">Username</label><input type="text" id="username" class="input_text" name="username" />
+                <label for="password">Password</label><input type="password" id="password" class="input_text" name="password" />
+                <label for="database">Database Name</label><input type="text" id="database" class="input_text" name="database" />
+                <input type="submit" value="Install" id="submit" />
+            </fieldset>
+        </form>
 
-      <?php } else { ?>
-      <p class="error">Please make the application/config/database.php file writable. <strong>Example</strong>:<br /><br /><code>chmod 777 application/config/database.php</code></p>
-      <?php } ?>
+    <?php } else { ?>
+        <p class="error">Please make the application/config/ directory writable. <strong>Example</strong>:<br /><br /><code>chmod 777 application/config/</code></p>
+    <?php } ?>
 
     </body>
 </html>
