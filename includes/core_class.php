@@ -32,10 +32,21 @@ class Core {
         // Open the file
         $config_file = file_get_contents($template_path);
 
-        $new  = str_replace("%HOSTNAME%",$data['hostname'],$config_file);
-        $new  = str_replace("%USERNAME%",$data['username'],$new);
-        $new  = str_replace("%PASSWORD%",$data['password'],$new);
-        $new  = str_replace("%DATABASE%",$data['database'],$new);
+        $new  = str_replace("%BASEURL%",$data['baseurl'],$config_file);
+        $new  = str_replace("%ENCRYPTKEY%",$data['encryptkey'],$new);
+        $new  = str_replace("%COOKIEPREFIX%",$data['cookieprefix'],$new);
+        $new  = str_replace("%COOKIEDOMAIN%",$data['cookiedomain'],$new);
+        $new  = str_replace("%COOKIEPATH%",$data['cookiepath'],$new);
+        $new  = str_replace("%CSRFTOKENNAME%",$data['csrftokenname'],$new);
+        $new  = str_replace("%CSRFCOOKIENAME%",$data['csrfcookiename'],$new);
+
+        $proddbupload = 'FALSE';
+        if ($data['proddbupload'] == 1)
+        {
+            $proddbupload = 'TRUE';
+        }
+
+        $new  = str_replace("%PRODDBUPLOAD%",$proddbupload,$new);
 
         // Write the new database.php file
         $handle = fopen($output_path,'w+');

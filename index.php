@@ -61,6 +61,9 @@ if($_POST) {
           label {
             margin-top: 20px;
           }
+          input.input_radio {
+            display: inline;
+          }
           input.input_text {
             width: 270px;
           }
@@ -85,7 +88,7 @@ if($_POST) {
     </head>
     <body>
 
-    <center><h1>Install</h1></center>
+    <center><h1>Install Buying Club Software</h1></center>
     <?php if(is_writable($config_path)){?>
 
         <?php if(isset($message)) {echo '<p class="error">' . $message . '</p>';}?>
@@ -98,17 +101,17 @@ if($_POST) {
                 <label for="password">Password</label><input type="password" id="password" class="input_text" name="password" />
                 <label for="database">Database Name</label><input type="text" id="database" class="input_text" name="database" />
             </fieldset>
-
+            <br/>
             <fieldset>
                 <legend>Base config settings</legend>
-                <label for="baseurl">Base URL</label><input type="text" id="baseurl" class="input_text" name="baseurl" value="http://<?=$_SERVER['HTTP_HOST'];?>" />
+                <label for="baseurl">Base URL</label><input type="text" id="baseurl" class="input_text" name="baseurl" value="http://<?=$_SERVER['HTTP_HOST'];?>/" />
                 <label for="encryptkey">Encryption Key</label><input type="text" id="encryptkey" class="input_text" name="encryptkey" />
                 <label for="cookieprefix">Cookie Prefix</label><input type="text" id="cookieprefix" class="input_text" name="cookieprefix" />
-                <label for="cookiedomain">Cookie Domain</label><input type="text" id="cookiedomain" class="input_text" name="cookiedomain" />
-                <label for="cookiepath">Cookie Path</label><input type="text" id="cookiepath" class="input_text" name="cookiepath" />
+                <label for="cookiedomain">Cookie Domain</label><input type="text" id="cookiedomain" class="input_text" name="cookiedomain" value="<?=$_SERVER['HTTP_HOST'];?>" />
+                <label for="cookiepath">Cookie Path</label><input type="text" id="cookiepath" class="input_text" name="cookiepath" value="/" />
                 <label for="csrftokenname">CSRF Token Name</label><input type="text" id="csrftokenname" class="input_text" name="csrftokenname" />
                 <label for="csrfcookiename">CSRF Cookie Name</label><input type="text" id="csrfcookiename" class="input_text" name="csrfcookiename" />
-                <label for="proddbupload">Product DB Upload</label><radio name="proddbupload" value='1' /> True <radio name="proddbupload" value='0' /> False 
+                <label for="proddbupload">Product DB Upload</label><input type="radio" class="input_radio" name="proddbupload" value='1' /> True <input type="radio" class="input_radio" name="proddbupload" value='0' /> False 
             </fieldset>
                 <input type="submit" value="Install" id="submit" />
         </form>
