@@ -14,8 +14,52 @@ class Core {
         return $message;
     }
 
-    // Function to write the config file
-    function write_config($data) {
+    // Function to write the config files
+    function write_configs($data) {
+        $db_written   = $this->write_db_config($data);
+        $base_written = $this->write_base_config($data);
+
+        return $db_written && $base_written;
+    }
+
+    // Function to write the base config file
+    function write_base_config($data) {
+
+        // Config path
+        $template_path  = 'config/config.php';
+        $output_path    = '../application/config/config.php';
+
+        // Open the file
+        $config_file = file_get_contents($template_path);
+
+        $new  = str_replace("%HOSTNAME%",$data['hostname'],$config_file);
+        $new  = str_replace("%USERNAME%",$data['username'],$new);
+        $new  = str_replace("%PASSWORD%",$data['password'],$new);
+        $new  = str_replace("%DATABASE%",$data['database'],$new);
+
+        // Write the new database.php file
+        $handle = fopen($output_path,'w+');
+
+        // Chmod the file, in case the user forgot
+        @chmod($output_path,0777);
+
+        // Verify file permissions
+        if(is_writable($output_path)) {
+
+            // Write the file
+            if(fwrite($handle,$new)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } else {
+            return false;
+        }
+    } 
+
+    // Function to write the db config file
+    function write_db_config($data) {
 
         // Config path
         $template_path  = 'config/database.php';

@@ -1,7 +1,5 @@
 <?php
 
-error_reporting(E_NONE); //Setting this to E_ALL showed that that cause of not redirecting were few blank lines added in some php files.
-
 $config_path = '../application/config/';
 
 // Only load the classes in case the user submitted the form
@@ -12,13 +10,15 @@ if($_POST) {
 
     $core = new Core();
 
+    $data = $_POST;
+
     // Validate the post data
-    if($core->validate_post($_POST) == true)
+    if($core->validate_post($data) == true)
     {
 
         // ensure the configs are writable
-        if ($core->write_config($_POST) == false) {
-            $message = $core->show_message('error',"The database configuration file could not be written, please chmod application/config/database.php file to 777");
+        if ($core->write_configs($data) == false) {
+            $message = $core->show_message('error',"The configuration path could not be written, please chmod application/config/ to 777");
         }
 
         // If no errors, redirect to registration page
@@ -27,12 +27,12 @@ if($_POST) {
             $redir .= "://".$_SERVER['HTTP_HOST'];
             $redir .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
             $redir = str_replace('install/','',$redir); 
-            header( 'Location: ' . $redir . 'welcome' ) ;
+            header( 'Location: ' . $redir ) ;
         }
 
     }
     else {
-        $message = $core->show_message('error','Not all fields have been filled in correctly. The host, username, password, and database name are required.');
+        $message = $core->show_message('error','Not all fields have been filled in correctly. All fields are required.');
     }
 }
 
@@ -79,7 +79,7 @@ if($_POST) {
           .error {
             background: #ffd1d1;
             border: 1px solid #ff5858;
-        padding: 4px;
+            padding: 4px;
           }
         </style>
     </head>
@@ -97,8 +97,20 @@ if($_POST) {
                 <label for="username">Username</label><input type="text" id="username" class="input_text" name="username" />
                 <label for="password">Password</label><input type="password" id="password" class="input_text" name="password" />
                 <label for="database">Database Name</label><input type="text" id="database" class="input_text" name="database" />
-                <input type="submit" value="Install" id="submit" />
             </fieldset>
+
+            <fieldset>
+                <legend>Base config settings</legend>
+                <label for="baseurl">Base URL</label><input type="text" id="baseurl" class="input_text" name="baseurl" value="http://<?=$_SERVER['HTTP_HOST'];?>" />
+                <label for="encryptkey">Encryption Key</label><input type="text" id="encryptkey" class="input_text" name="encryptkey" />
+                <label for="cookieprefix">Cookie Prefix</label><input type="text" id="cookieprefix" class="input_text" name="cookieprefix" />
+                <label for="cookiedomain">Cookie Domain</label><input type="text" id="cookiedomain" class="input_text" name="cookiedomain" />
+                <label for="cookiepath">Cookie Path</label><input type="text" id="cookiepath" class="input_text" name="cookiepath" />
+                <label for="csrftokenname">CSRF Token Name</label><input type="text" id="csrftokenname" class="input_text" name="csrftokenname" />
+                <label for="csrfcookiename">CSRF Cookie Name</label><input type="text" id="csrfcookiename" class="input_text" name="csrfcookiename" />
+                <label for="proddbupload">Product DB Upload</label><radio name="proddbupload" value='1' /> True <radio name="proddbupload" value='0' /> False 
+            </fieldset>
+                <input type="submit" value="Install" id="submit" />
         </form>
 
     <?php } else { ?>
